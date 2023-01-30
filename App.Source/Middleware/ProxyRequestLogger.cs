@@ -2,17 +2,21 @@
 
 namespace YarpDemo; 
 
-public class ProxyRequestHandler {
+public class ProxyRequestLogger{
 
     private List<string> AllowedMethods = new List<string> { "POST", "PUT" };
-    private readonly ILogger<ProxyRequestHandler> _logger;
-    public ProxyRequestHandler(ILogger<ProxyRequestHandler> logger ){
+    private readonly ILogger<ProxyRequestLogger> _logger;
+
+    private readonly RuntimeConfiguration _runtimeConfiguration; 
+    public ProxyRequestLogger(ILogger<ProxyRequestLogger> logger, 
+    RuntimeConfiguration runtimeConfiguration ){
         _logger = logger; 
+        _runtimeConfiguration = runtimeConfiguration; 
     }
     public async Task Handle(HttpContext context,RequestDelegate next)
     {
        {
-        if (AllowedMethods.Contains(context.Request.Method))
+        if (AllowedMethods.Contains(context.Request.Method) && _runtimeConfiguration.enable)
         {
             context.Request.EnableBuffering();
             // sepressing the Error 
