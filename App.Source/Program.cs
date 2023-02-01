@@ -1,4 +1,5 @@
 
+using YarpDemo; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +21,6 @@ builder.Services.AddReverseProxy()
 
 // services
 
-builder.Services.AddSingleton(typeof(YarpDemo.ProxyRequestLogger)); 
-
 builder.Services.AddSingleton(typeof(YarpDemo.FeatureOptionWrapper));
 
 builder.Services.AddOptions<YarpDemo.FeatureOption>()
@@ -34,11 +33,9 @@ var app = builder.Build();
 
 app.MapControllers();
 
-var proxyRequestHandler  = app.Services.GetRequiredService<YarpDemo.ProxyRequestLogger>(); 
-
 app.MapReverseProxy(proxyPipeline =>
 {
-    proxyPipeline.Use(proxyRequestHandler.Handle);
+    proxyPipeline.UseRequestLogger();
 });
 
 app.Logger.LogInformation("Starting proxy.......");
