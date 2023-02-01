@@ -22,8 +22,11 @@ builder.Services.AddReverseProxy()
 
 builder.Services.AddSingleton(typeof(YarpDemo.ProxyRequestLogger)); 
 
-builder.Services.AddSingleton(typeof(YarpDemo.RuntimeConfiguration));
+builder.Services.AddSingleton(typeof(YarpDemo.FeatureOptionWrapper));
 
+builder.Services.AddOptions<YarpDemo.FeatureOption>()
+                .Bind(builder.Configuration.GetSection(nameof(YarpDemo.FeatureOption)))
+                .ValidateDataAnnotations();
 
 // app 
 

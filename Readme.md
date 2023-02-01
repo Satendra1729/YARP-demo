@@ -13,3 +13,7 @@
 ## 6. write bash based test
 
 ## 7. customize as per requirment
+
+## 8. Proper Logging
+
+## 9. Interface declaration

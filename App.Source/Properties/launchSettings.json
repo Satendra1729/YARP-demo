@@ -4,7 +4,6 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7278;http://localhost:5023",
       "environmentVariables": {
         "YARP_ENVIRONMENT": "Development"
       }
