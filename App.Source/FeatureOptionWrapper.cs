@@ -1,6 +1,9 @@
 
 using Microsoft.Extensions.Options; 
+using Serilog;
+using Serilog.Context; 
 namespace YarpDemo;
+
 public class FeatureOptionWrapper
 {
     private bool isRequestLoggingEnabled; 
@@ -9,20 +12,18 @@ public class FeatureOptionWrapper
         return isRequestLoggingEnabled; 
     }
     set {
-        _logger.LogInformation("Set isRequestLoggingEnabled to "+value); 
+        _logger.Information("Set isRequestLoggingEnabled to "+value); 
         this.isRequestLoggingEnabled = value; 
     }}
 
     public List<string> AllowedMethod {get;init;}
 
 
-    private ILogger<FeatureOptionWrapper> _logger {get;set;}
+    private Serilog.ILogger _logger = Log.ForContext<FeatureOptionWrapper>(); 
 
     // configuration loading at starting time
-    public FeatureOptionWrapper(ILogger<FeatureOptionWrapper> logger,
-                                IConfiguration config, IOptions<FeatureOption> proxyFeature)
+    public FeatureOptionWrapper(IConfiguration config, IOptions<FeatureOption> proxyFeature)
     {
-        _logger = logger; 
         
         this.IsRequestLoggingEnabled = proxyFeature.Value.isRequestLoggingEnabled; 
 

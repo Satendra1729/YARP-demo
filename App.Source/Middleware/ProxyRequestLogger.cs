@@ -1,50 +1,60 @@
 
-using Microsoft.Extensions.Options; 
-namespace YarpDemo; 
+using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Context;
+namespace YarpDemo;
 
-public class RequestLogger{
+public class RequestLogger
+{
 
 
     // Default allowed method for request logging are POST and PUT
-    private readonly ILogger<RequestLogger> _logger;
-    private readonly FeatureOptionWrapper _featureOptionWrapper; 
+    private readonly Serilog.ILogger _logger = Log.ForContext<RequestLogger>();
+    private readonly FeatureOptionWrapper _featureOptionWrapper;
     private readonly RequestDelegate _next;
 
-    public RequestLogger(ILogger<RequestLogger> logger, 
-    FeatureOptionWrapper featureOptionWrapper, RequestDelegate next ){
-        _logger = logger; 
-        _featureOptionWrapper = featureOptionWrapper; 
-        _next = next; 
+    public RequestLogger(FeatureOptionWrapper featureOptionWrapper, RequestDelegate next)
+    {
+        _featureOptionWrapper = featureOptionWrapper;
+        _next = next;
     }
     public async Task InvokeAsync(HttpContext context)
     {
-       {
-        if (_featureOptionWrapper.AllowedMethod.Select(x=>x.ToLower()).Contains(context.Request.Method.ToLower()) && 
+
+        if (_featureOptionWrapper.AllowedMethod.Select(x => x.ToLower()).Contains(context.Request.Method.ToLower()) &&
            _featureOptionWrapper.IsRequestLoggingEnabled)
         {
             context.Request.EnableBuffering();
+
+            await _next.Invoke(context);
+
+            context.Request.Body.Position = 0;
             try
             {
                 var bodyAsText = new StreamReader(context.Request.Body).ReadToEndAsync();
-                _logger.LogInformation("Body --> " + bodyAsText.Result);
+
+                using (LogContext.PushProperty("cate", "REQ"))
+                {
+                    _logger.Information("Requesting For {path} with {body} with return status {resc}",
+                                         context.Request.Path,bodyAsText.Result, context.Response.StatusCode);
+
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-            }
-            finally
-            {
-                context.Request.Body.Position = 0;
+                _logger.Error("{Message} {Exception}", ex.Message, (ex.StackTrace ?? "").Trim());
             }
         }
-        await _next.Invoke(context);
-    }
+        else
+            await _next.Invoke(context);
+
     }
 }
 
-public static class RequestLoggerMiddlewareExtenstion {
-    public static IApplicationBuilder UseRequestLogger( this IReverseProxyApplicationBuilder bulider)
+public static class RequestLoggerMiddlewareExtenstion
+{
+    public static IApplicationBuilder UseRequestLogger(this IReverseProxyApplicationBuilder bulider)
     {
-        return bulider.UseMiddleware<RequestLogger>(); 
+        return bulider.UseMiddleware<RequestLogger>();
     }
 }

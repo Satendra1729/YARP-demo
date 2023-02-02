@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using YarpDemo; 
+using Serilog; 
 
 namespace YarpDemo.Controllers;
 
@@ -7,12 +7,10 @@ namespace YarpDemo.Controllers;
 [Route("[controller]")]
 public class FeatureConfigurationController : ControllerBase
 { 
-    private readonly ILogger<FeatureConfigurationController> _logger;
+    private readonly Serilog.ILogger _logger = Log.ForContext<FeatureConfigurationController>();
     private readonly FeatureOptionWrapper _featureConfiguration; 
-    public FeatureConfigurationController(ILogger<FeatureConfigurationController> logger,
-        FeatureOptionWrapper featureConfiguration)
+    public FeatureConfigurationController(FeatureOptionWrapper featureConfiguration)
     {
-        _logger = logger;
         _featureConfiguration = featureConfiguration; 
     }
 
