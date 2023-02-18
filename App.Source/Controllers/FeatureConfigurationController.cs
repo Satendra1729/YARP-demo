@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Serilog; 
 
-namespace YarpDemo.Controllers;
+namespace YARP_Proxy.Controllers;
 
 [ApiController]
 [Route("[controller]")]

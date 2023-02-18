@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace YarpDemo;
+namespace YARP_Proxy;
 
 public class FeatureOption {
     [Required]

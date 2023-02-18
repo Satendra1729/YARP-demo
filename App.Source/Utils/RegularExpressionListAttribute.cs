@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace YarpDemo;
+namespace YARP_Proxy;
 
 
 public class RegularExpressionListAttribute : RegularExpressionAttribute

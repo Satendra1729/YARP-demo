@@ -1,0 +1,7 @@
+﻿[18:02:2023 13:18:19 INF SYS] Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager User profile is available. Using '"/home/kushsat/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest. 
+[18:02:2023 13:18:19 INF SYS] Yarp.ReverseProxy.Configuration.ConfigProvider.ConfigurationConfigProvider Loading proxy data from config. 
+[18:02:2023 13:18:19 INF SYS] NA Starting proxy....... 
+[18:02:2023 13:18:19 INF SYS] Microsoft.Hosting.Lifetime Now listening on: "http://[::]:8080" 
+[18:02:2023 13:18:19 INF SYS] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down. 
+[18:02:2023 13:18:19 INF SYS] Microsoft.Hosting.Lifetime Hosting environment: "Development" 
+[18:02:2023 13:18:19 INF SYS] Microsoft.Hosting.Lifetime Content root path: "/media/kushsat/80cf842c-d1f4-4a61-9a0f-9097a162787a/code/git/YARP-demo/App.Source" 

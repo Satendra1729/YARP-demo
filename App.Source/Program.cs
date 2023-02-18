@@ -1,5 +1,5 @@
 using Serilog; 
-using YarpDemo; 
+using YARP_Proxy; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +9,8 @@ builder.Host.UseSerilog();
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration
-       .AddJsonFile($"Configs/appsettings.{Environment.GetEnvironmentVariable("YARP_ENVIRONMENT")}.json",true)
-       .AddEnvironmentVariables(prefix: "YARP_")
+       .AddJsonFile($"Configs/appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",true)
+       .AddEnvironmentVariables(prefix: "ASPNETCORE_")
        .Build();
 
 builder.Services.AddReverseProxy()
@@ -18,10 +18,10 @@ builder.Services.AddReverseProxy()
 
 // services
 
-builder.Services.AddSingleton(typeof(YarpDemo.FeatureOptionWrapper));
+builder.Services.AddSingleton(typeof(FeatureOptionWrapper));
 
-builder.Services.AddOptions<YarpDemo.FeatureOption>()
-                .Bind(configuration.GetSection(nameof(YarpDemo.FeatureOption)))
+builder.Services.AddOptions<FeatureOption>()
+                .Bind(configuration.GetSection(nameof(FeatureOption)))
                 .ValidateDataAnnotations();
 
 Log.Logger = new LoggerConfiguration()

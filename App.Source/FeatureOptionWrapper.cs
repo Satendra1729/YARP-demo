@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options; 
 using Serilog;
 using Serilog.Context; 
-namespace YarpDemo;
+namespace YARP_Proxy;
 
 public class FeatureOptionWrapper
 {
