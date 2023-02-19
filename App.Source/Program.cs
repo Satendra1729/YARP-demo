@@ -44,3 +44,5 @@ app.MapReverseProxy(proxyPipeline =>
 Log.Logger.Information("Starting proxy.......");
 
 app.Run();
+
+public partial class Program { }
