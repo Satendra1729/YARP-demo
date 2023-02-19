@@ -43,6 +43,11 @@ app.MapReverseProxy(proxyPipeline =>
 
 Log.Logger.Information("Starting proxy.......");
 
+app.Lifetime.ApplicationStopped.Register(() =>{
+    Log.Logger.Information("Closing proxy......."); 
+    Log.CloseAndFlush(); 
+});
+
 app.Run();
 
 public partial class Program { }
